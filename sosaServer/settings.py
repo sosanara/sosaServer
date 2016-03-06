@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+<<<<<<< HEAD
 from conf.database import database
+=======
+>>>>>>> 16d79df8538509ab1eae4e2e03add36418b5b49d
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,7 +78,16 @@ WSGI_APPLICATION = 'sosaServer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+<<<<<<< HEAD
 DATABASES = database()
+=======
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+>>>>>>> 16d79df8538509ab1eae4e2e03add36418b5b49d
 
 
 # Password validation
@@ -102,7 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+<<<<<<< HEAD
 TIME_ZONE = 'Asia/Seoul'
+=======
+TIME_ZONE = 'UTC'
+>>>>>>> 16d79df8538509ab1eae4e2e03add36418b5b49d
 
 USE_I18N = True
 
