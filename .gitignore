@@ -131,6 +131,7 @@ target/
 
 # dotenv
 .env
+
 ### Custom ###
-conf/*
+conf/database.py
 .idea/*
