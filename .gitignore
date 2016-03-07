@@ -131,10 +131,6 @@ target/
 
 # dotenv
 .env
-<<<<<<< HEAD
-
-
 ### Custom ###
 conf/*
-=======
->>>>>>> 16d79df8538509ab1eae4e2e03add36418b5b49d
+.idea/*
