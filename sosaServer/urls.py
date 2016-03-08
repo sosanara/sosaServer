@@ -27,6 +27,5 @@ urlpatterns = [
     # url(r'^admin/', admin.site.urls, name="admin"),
 
     url(r'^picture/', include('picture.urls', namespace="picture")),
-    url(r'^graph/', include('graph.urls', namespace="graph")),
-    url(r'^history/', include('history.urls', namespace="history")),
+    url(r'^userInfo/', include('userInfo.urls', namespace="user_info")),
 ]
