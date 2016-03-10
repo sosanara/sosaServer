@@ -1,9 +1,10 @@
 from django.conf.urls import url, include
 from django.views.decorators.csrf import csrf_exempt
-from .views import UserInfo, Graph, ChoiceGraph, History, ChoiceHistory
+from .views import UserInfo, Graph, ChoiceGraph, History, ChoiceHistory, Statistic
 
 urlpatterns = [
     url(r'^$', csrf_exempt(UserInfo.as_view()), name="user_info"),
+    url(r'^statistic/$', csrf_exempt(Statistic.as_view()), name="statistic"),
 
     url(r'^graph/', include([
         url(r'^$', csrf_exempt(Graph.as_view()), name="graph"),

@@ -9,6 +9,11 @@ class UserInfo(View):
         return HttpResponse("UserInfo_get")
 
 
+class Statistic(View):
+    def get(self, request):
+        return HttpResponse("Statistic_get")
+
+
 class Graph(View):
     def get(self, request):
         return HttpResponse("Graph_get")
