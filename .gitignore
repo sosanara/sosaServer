@@ -135,3 +135,4 @@ target/
 ### Custom ###
 conf/database.py
 .idea/*
+*/migrations
