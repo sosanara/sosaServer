@@ -135,8 +135,12 @@ target/
 ### Custom ###
 conf/database.py
 conf/email.py
+conf/sosaServer.conf
+conf/sosaServer_uwsgi.ini
+conf/site_host.py
 .idea/*
 */migrations
 static/myHair/*
 static/myResult/*
 venv
+sosaServer.sock
