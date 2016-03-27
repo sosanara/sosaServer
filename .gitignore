@@ -134,5 +134,9 @@ target/
 
 ### Custom ###
 conf/database.py
+conf/email.py
 .idea/*
 */migrations
+static/myHair/*
+static/myResult/*
+venv
