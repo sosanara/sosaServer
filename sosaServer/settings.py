@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 from conf import email
+from conf.site_host import site_host
 from conf.database import database
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,9 +28,9 @@ SECRET_KEY = '*)pw3gf^-4a%skec$abzrw!2%l9%csk=s6*j%8$(y-9q%^0ozn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.2:8000', '127.0.0.1:8000']
+ALLOWED_HOSTS = '*'
 
-SITE_HOST = '127.0.0.1:8000'
+SITE_HOST = site_host()
 
 # Application definition
 
@@ -135,9 +136,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static/'),
+)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 OLD_PASSWORD_FIELD_ENABLED = True
