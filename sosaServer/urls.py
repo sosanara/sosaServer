@@ -15,17 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.decorators.csrf import csrf_exempt
-from sosaServer.views import Index, Login, Signup
 
+from rest_framework.urlpatterns import format_suffix_patterns
+
+from sosaServer.viewset import user_detail
 
 urlpatterns = [
-    url(r'^$', csrf_exempt(Index.as_view()), name="main"),
+    url(r'^admin/', admin.site.urls, name="admin"),
+    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 
-    url(r'^login/$', csrf_exempt(Login.as_view()), name="login"),
-    url(r'^signup/$', csrf_exempt(Signup.as_view()), name="signup"),
-    # url(r'^admin/', admin.site.urls, name="admin"),
-
-    url(r'^picture/', include('picture.urls', namespace="picture")),
-    url(r'^userInfo/', include('userInfo.urls', namespace="user_info")),
+    url(r'^api/v1/', include([
+        url(r'^$', user_detail, name="api_user_detail"),
+        url(r'^picture/', include('picture.urls', namespace="picture")),
+        url(r'^userInfo/', include('userInfo.urls', namespace="user_info")),
+    ])),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
