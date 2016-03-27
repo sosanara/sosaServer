@@ -140,6 +140,7 @@ conf/sosaServer_uwsgi.ini
 conf/settings.py
 .idea/*
 */migrations
+*/migrations/*
 static/myHair/*
 static/myResult/*
 venv
