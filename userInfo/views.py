@@ -1,37 +1,33 @@
-from django.shortcuts import render
-from django.views.generic import View
-from django.http import HttpResponse
 # Create your views here.
 
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.response import Response
 
-class UserInfo(View):
-    def get(self, request):
-        return HttpResponse("UserInfo_get")
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-
-class Statistic(View):
-    def get(self, request):
-        return HttpResponse("Statistic_get")
+from userInfo.models import MyUser
+from userInfo.serializers import MyUserSerializer
 
 
-class Graph(View):
-    def get(self, request):
-        return HttpResponse("Graph_get")
+class TempMixin(object):
+    queryset = MyUser.objects.all()
+    serializer_class = MyUserSerializer
 
 
-class ChoiceGraph(View):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse("ChoiceGraph_get" + self.kwargs['graph_id'])
+class UserDetail(TempMixin, RetrieveAPIView):
+    serializer_class = MyUserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 
-class History(View):
-    def get(self, request):
-        return HttpResponse("History_get")
+class StatisticDetail(TempMixin, RetrieveAPIView):
+    pass
 
 
-class ChoiceHistory(View):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse("ChoiceHistory_get" + self.kwargs['history_id'])
+class GraphViewSet(TempMixin, ReadOnlyModelViewSet):
+    pass
 
-    def delete(self, request, *args, **kwargs):
-        return HttpResponse("ChoiceHistory_delete, " + self.kwargs['history_id'])
+
+class HistoryViewSet(TempMixin, ModelViewSet):
+    pass

@@ -1,17 +1,19 @@
 from django.conf.urls import url, include
-from django.views.decorators.csrf import csrf_exempt
-from .views import UserInfo, Graph, ChoiceGraph, History, ChoiceHistory, Statistic
+
+from sosaServer.viewset import (
+    user_detail, statistic_detail, graph_list, graph_detail, history_list, history_detail
+)
+
 
 urlpatterns = [
-    url(r'^$', csrf_exempt(UserInfo.as_view()), name="user_info"),
-    url(r'^statistic/$', csrf_exempt(Statistic.as_view()), name="statistic"),
-
+    url(r'^$', user_detail, name="user_detail"),
+    url(r'^statistic/$', statistic_detail, name="statistic_detail"),
     url(r'^graph/', include([
-        url(r'^$', csrf_exempt(Graph.as_view()), name="graph"),
-        url(r'^(?P<graph_id>\d+)/$', csrf_exempt(ChoiceGraph.as_view()), name="choice_graph"),
+        url(r'^$', graph_list, name="graph_list"),
+        url(r'^(?P<graph_id>\d+)/$', graph_detail, name="graph_detail"),
     ])),
     url(r'^history/', include([
-        url(r'^$', csrf_exempt(History.as_view()), name="history"),
-        url(r'^(?P<history_id>\d+)/$', csrf_exempt(ChoiceHistory.as_view()), name="choice_history"),
+        url(r'^$', history_list, name="history_list"),
+        url(r'^(?P<history_id>\d+)/$', history_detail, name="history_detail"),
     ])),
 ]
