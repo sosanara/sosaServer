@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from models import MyResult, MyPicture
+from .models import MyResult, MyPicture
 from rest_framework import serializers
 from django.utils.translation import ugettext_lazy as _
 
@@ -44,9 +44,5 @@ class MyPictureDetailSerializer(serializers.Serializer):
 
     def get_cleaned_data(self, user, kwargs):
         my_picture = self.validate_image(kwargs)
-        my_user = self.validate_user(user, my_picture.user)
-        return {
-            'image': my_picture.image.name,
-            'result': my_picture.result.image.name,
-            'user': my_user.last_name + my_user.first_name,
-        }
+        self.validate_user(user, my_picture.user)
+        return my_picture
