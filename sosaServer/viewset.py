@@ -1,6 +1,6 @@
 from picture.views import (PictureList, PictureDetail)
 from userInfo.views import (
-    UserDetail, StatisticDetail, HistoryViewSet, GraphViewSet
+    UserDetail, StatisticDetail, HistoryList, HistoryDetail, GraphList, GraphDetail
 )
 
 
@@ -12,19 +12,13 @@ picture_list = PictureList.as_view()
 
 picture_detail = PictureDetail.as_view()
 
-history_list = HistoryViewSet.as_view({
-    'get': 'list',
-})
+history_list = HistoryList.as_view()
 
-history_detail = HistoryViewSet.as_view({
+history_detail = HistoryDetail.as_view({
     'get': 'retrieve',
     'delete': 'destroy'
 })
 
-graph_list = GraphViewSet.as_view({
-    'get': 'list',
-})
+graph_list = GraphList.as_view()
 
-graph_detail = GraphViewSet.as_view({
-    'get': 'retrieve',
-})
+graph_detail = GraphDetail.as_view()
