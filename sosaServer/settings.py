@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 from conf import email
-from conf.settings import site_host, secret_key
+from conf.settings import site_host, secret_key, static_root
 from conf.database import database
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -135,11 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static/'),
+    os.path.join(BASE_DIR, 'assets/'),
 )
-STATIC_ROOT = '/Users/jicjjang/workspace/sosaServer/static/'
+STATIC_ROOT = static_root()
 
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = True
