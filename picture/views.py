@@ -3,9 +3,11 @@
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import exceptions
 
 from django.utils.translation import ugettext_lazy as _
 
+from .models import MyPicture
 from .serializers import MyPictureListSerializer, MyPictureDetailSerializer
 
 
@@ -14,7 +16,8 @@ def response(picture, message):
             "success": _(message),
             "value": {
                 "image": 'uploads/' + picture.image.name,
-                "result": picture.result.image.name,
+                "result_image": 'uploads/' + picture.result.image.name,
+                "result_type": picture.result.type,
                 "user": picture.user.last_name + picture.user.first_name,
             }
         })
@@ -43,8 +46,14 @@ class PictureDetail(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     allowed_methods = ('GET', 'OPTIONS', 'HEAD')
 
+    def get_queryset(self):
+        try:
+            return MyPicture.objects.get(id=self.kwargs['picture_id'])
+        except MyPicture.DoesNotExist:
+            raise exceptions.NotFound()
+
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        picture = serializer.get_cleaned_data(request.user, kwargs)
+        picture = serializer.get_cleaned_data(request.user, self.get_queryset())
 
         return response(picture, "Saved picture has been retrieved.")
