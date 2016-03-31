@@ -30,24 +30,25 @@ class MyUserDetailSerializer(serializers.Serializer):
 
 
 class MyStaticDetailSerializer(serializers.Serializer):
-    def _validate_user(self, all_users):
-        if all_users is None:
-            raise serializers.ValidationError({"all_users": _("This image is not yours. Please check your image.")})
-        # return all_users.
-
-
-    def _validate_image(self, kwargs):
-        my_picture = MyPicture.objects.filter(id=kwargs['picture_id']).first()
-        if my_picture is None:
-            raise serializers.ValidationError({"image": _("Image was not found.")})
-        return {
-            'picture': my_picture
-        }
-
-    def get_cleaned_data(self, user, all_users):
-        self.cleaned_data = self._validate_user(all_users)
-        self._validate_user(user, self.cleaned_data['picture'].user)
-        return self.cleaned_data['picture']
+    # def _validate_user(self, all_users):
+    #     if all_users is None:
+    #         raise serializers.ValidationError({"all_users": _("This image is not yours. Please check your image.")})
+    #     # return all_users.
+    #
+    #
+    # def _validate_image(self, kwargs):
+    #     my_picture = MyPicture.objects.filter(id=kwargs['picture_id']).first()
+    #     if my_picture is None:
+    #         raise serializers.ValidationError({"image": _("Image was not found.")})
+    #     return {
+    #         'picture': my_picture
+    #     }
+    #
+    # def get_cleaned_data(self, user, all_users):
+    #     self.cleaned_data = self._validate_user(all_users)
+    #     self._validate_user(user, self.cleaned_data['picture'].user)
+    #     return self.cleaned_data['picture']
+    pass
 
 
 class MyHistoryListSerializer(serializers.Serializer):

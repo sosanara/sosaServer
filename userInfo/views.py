@@ -46,32 +46,33 @@ class UserDetail(RetrieveAPIView):
 
 
 class StatisticDetail(RetrieveAPIView):
-    serializer_class = MyStaticDetailSerializer
-    permission_classes = (IsAuthenticated,)
-    allowed_methods = ('GET', 'OPTIONS', 'HEAD')
-
-    def get_queryset(self):
-        return MyPicture.objects.all().exclude(id=self.request.user_id)
-
-    def get_my_age(self, request):
-        pprint(datetime.today().year - request.user.birth)
-        return datetime.today().year - request.user.birth
-
-    def get_same_ages(self, my_age):
-        filtered_picture = []
-        for picture in self.get_queryset():
-            if (picture.created_date.year - picture.user.birth)-5 < my_age or \
-                                    (picture.created_date.year - picture.user.birth)+5 > my_age:
-                filtered_picture.append(picture)
-
-        return filtered_picture
-
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        my_age = self.get_my_age(request)
-        same_ages = self.get_same_ages(my_age)
-        statistic = serializer.get_cleaned_data(request.user, self.get_queryset())
-        return response(statistic, "It was successful statistic detail search.")
+    # serializer_class = MyStaticDetailSerializer
+    # permission_classes = (IsAuthenticated,)
+    # allowed_methods = ('GET', 'OPTIONS', 'HEAD')
+    #
+    # def get_queryset(self):
+    #     return MyPicture.objects.all().exclude(id=self.request.user_id)
+    #
+    # def get_my_age(self, request):
+    #     pprint(datetime.today().year - request.user.birth)
+    #     return datetime.today().year - request.user.birth
+    #
+    # def get_same_ages(self, my_age):
+    #     filtered_picture = []
+    #     for picture in self.get_queryset():
+    #         if (picture.created_date.year - picture.user.birth)-5 < my_age or \
+    #                                 (picture.created_date.year - picture.user.birth)+5 > my_age:
+    #             filtered_picture.append(picture)
+    #
+    #     return filtered_picture
+    #
+    # def retrieve(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     my_age = self.get_my_age(request)
+    #     same_ages = self.get_same_ages(my_age)
+    #     statistic = serializer.get_cleaned_data(request.user, self.get_queryset())
+    #     return response(statistic, "It was successful statistic detail search.")
+    pass
 
 
 class HistoryList(ListAPIView):
