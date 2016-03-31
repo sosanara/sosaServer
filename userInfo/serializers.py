@@ -2,8 +2,6 @@
 
 from rest_framework import serializers
 
-from .models import MyUser
-
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -52,7 +50,6 @@ class MyStaticDetailSerializer(serializers.Serializer):
 
 
 class MyHistoryListSerializer(serializers.Serializer):
-
     def get_cleaned_data(self, user, my_pictures):
         pictures = {}
         for my_picture in my_pictures:
@@ -63,7 +60,6 @@ class MyHistoryListSerializer(serializers.Serializer):
 
 
 class MyHistoryDetailSerializer(serializers.Serializer):
-
     def get_cleaned_data(self, user, my_picture):
         _validate_user(user, my_picture.user)
         _validate_image(my_picture)
@@ -76,8 +72,29 @@ class MyHistoryDetailSerializer(serializers.Serializer):
 
 
 class MyGraphListSerializer(serializers.Serializer):
-    pass
+    def get_cleaned_data(self, user, my_pictures):
+        info = {}
+        data = {}
+        for my_picture in my_pictures:
+            _validate_user(user, my_picture.user)
+            _validate_image(my_picture)
+            data[my_picture.id] = {
+                'create_date': my_picture.created_date,
+                'birth': my_picture.user.birth,
+                'type': my_picture.result.type,
+            }
+            info.update(data)
+        return info
 
 
 class MyGraphDetailSerializer(serializers.Serializer):
-    pass
+    def get_cleaned_data(self, user, my_picture):
+        _validate_user(user, my_picture.user)
+        _validate_image(my_picture)
+        self.cleaned_data = {
+            'image': 'uploads/' + my_picture.image.name,
+            'result_image': 'uploads/' + my_picture.result.image.name,
+            'result_type': my_picture.result.type,
+            'user': my_picture.user.last_name + my_picture.user.first_name,
+        }
+        return self.cleaned_data

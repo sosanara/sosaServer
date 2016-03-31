@@ -126,13 +126,13 @@ class GraphList(ListAPIView):
 
     def get_queryset(self):
         try:
-            return MyUser.objects.get(id=self.request.user.id)
-        except MyUser.DoesNotExist:
+            return MyPicture.objects.filter(user=self.request.user)
+        except MyPicture.DoesNotExist:
             raise exceptions.NotFound()
 
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        graph_list = serializer.get_cleaned_data(request.user, kwargs)
+        graph_list = serializer.get_cleaned_data(request.user, self.get_queryset())
         return response(graph_list, "It was successful graph list search.")
 
 
@@ -143,11 +143,11 @@ class GraphDetail(RetrieveAPIView):
 
     def get_queryset(self):
         try:
-            return MyUser.objects.get(id=self.request.user.id)
-        except MyUser.DoesNotExist:
+            return MyPicture.objects.get(id=self.kwargs['graph_id'])
+        except MyPicture.DoesNotExist:
             raise exceptions.NotFound()
 
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        graph_detail = serializer.get_cleaned_data(request.user, kwargs)
+        graph_detail = serializer.get_cleaned_data(request.user, self.get_queryset())
         return response(graph_detail, "It was successful graph detail search.")
