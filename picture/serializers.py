@@ -11,7 +11,6 @@ class MyPictureListSerializer(serializers.Serializer):
     def validate_image(self, image):
         if image is '':
             raise serializers.ValidationError(_("Image is None. Please insert image"))
-        return image
 
     def get_cleaned_data(self, request):
         return {
@@ -31,18 +30,19 @@ class MyPictureListSerializer(serializers.Serializer):
 
 class MyPictureDetailSerializer(serializers.Serializer):
 
-    def validate_user(self, user1, user2):
+    def _validate_user(self, user1, user2):
         if user1.id != user2.id:
-            raise serializers.ValidationError({"image": _("This image is not yours. Please check your image.")})
-        return user1
+            raise serializers.ValidationError({"user": _("You are not have authorization.")})
 
-    def validate_image(self, kwargs):
+    def _validate_image(self, kwargs):
         my_picture = MyPicture.objects.filter(id=kwargs['picture_id']).first()
-        if my_picture == None:
+        if my_picture is None:
             raise serializers.ValidationError({"image": _("Image was not found.")})
-        return my_picture
+        return {
+            'picture': my_picture
+        }
 
     def get_cleaned_data(self, user, kwargs):
-        my_picture = self.validate_image(kwargs)
-        self.validate_user(user, my_picture.user)
-        return my_picture
+        self.cleaned_data = self._validate_image(kwargs)
+        self._validate_user(user, self.cleaned_data['picture'].user)
+        return self.cleaned_data['picture']

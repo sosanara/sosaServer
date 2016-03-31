@@ -6,14 +6,14 @@ from rest_framework.response import Response
 
 from django.utils.translation import ugettext_lazy as _
 
-from picture.serializers import MyPictureListSerializer, MyPictureDetailSerializer
+from .serializers import MyPictureListSerializer, MyPictureDetailSerializer
 
 
 def response(picture, message):
-    return Response ({
+    return Response({
             "success": _(message),
             "value": {
-                "image": picture.image.name,
+                "image": 'uploads/' + picture.image.name,
                 "result": picture.result.image.name,
                 "user": picture.user.last_name + picture.user.first_name,
             }

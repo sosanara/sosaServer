@@ -8,7 +8,7 @@ from userInfo.models import MyUser
 
 
 class MyResult(models.Model):
-    image = models.ImageField(max_length=1024, upload_to='static/myResult/%Y/%m/%d/%h/%m/%s', blank=False)
+    image = models.ImageField(max_length=1024, upload_to='myResult/%Y/%m/%d/%h/%m/%s', blank=False)
     type = models.IntegerField(default=0, blank=False, unique=True)
     extra = models.TextField(blank=True)
     created_date = models.DateTimeField(default=timezone.now)
@@ -19,7 +19,7 @@ class MyResult(models.Model):
 
 
 class MyPicture(models.Model):
-    image = models.ImageField(max_length=1024, upload_to='static/myHair/%Y/%m/%d/%h/%m/%s', blank=False)
+    image = models.ImageField(max_length=1024, upload_to='myHair/%Y/%m/%d/%h/%m/%s', blank=False)
     user = models.ForeignKey(MyUser, related_name="my_user", blank=False)
     result = models.ForeignKey(MyResult, related_name="my_result", blank=True)
     extra = models.TextField(blank=True)
