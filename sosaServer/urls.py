@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.conf.urls.static import static
 from django.contrib import admin
 
 from rest_framework.urlpatterns import format_suffix_patterns
 
+from sosaServer import settings
 from sosaServer.viewset import user_detail
 
 urlpatterns = [
@@ -31,6 +33,7 @@ urlpatterns = [
         url(r'^picture/', include('picture.urls', namespace="picture")),
         url(r'^userInfo/', include('userInfo.urls', namespace="user_info")),
     ])),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+              + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = format_suffix_patterns(urlpatterns)

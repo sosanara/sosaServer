@@ -135,6 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+# shown media url
+MEDIA_URL = '/uploads/'
+# all uploaded image file path
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_files')
+
 # shown static url
 STATIC_URL = '/static/'
 # before collecting
@@ -185,5 +190,4 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
-    'PAGE_SIZE': 10
 }
