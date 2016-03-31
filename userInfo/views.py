@@ -39,6 +39,11 @@ class UserDetail(RetrieveAPIView):
     def get_object(self):
         return self.request.user
 
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        user_detail = serializer.get_cleaned_data(self.get_object())
+        return response(user_detail, "It was successful user detail search.")
+
 
 class StatisticDetail(RetrieveAPIView):
     serializer_class = MyStaticDetailSerializer

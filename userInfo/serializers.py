@@ -17,11 +17,16 @@ def _validate_image(my_picture):
         raise serializers.ValidationError({"image": _("Image was not found.")})
 
 
-class MyUserDetailSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = MyUser
-        fields = ('username', 'first_name', 'last_name', 'birth', 'gender', 'email')
+class MyUserDetailSerializer(serializers.Serializer):
+    def get_cleaned_data(self, user):
+        self.cleaned_data = {
+            'username': user.username,
+            'name':  user.last_name + user.first_name,
+            'birth': user.birth,
+            'gender': user.gender,
+            'email': user.email,
+        }
+        return self.cleaned_data
 
 
 class MyStaticDetailSerializer(serializers.Serializer):
