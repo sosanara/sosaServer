@@ -4,3 +4,7 @@ def site_host():
 
 def secret_key():
     return 'secret_key'
+
+
+def static_root():
+    return '/Users/junseokchoi/workspace/pcharm/sosanara/sosaServer/collected_statics'
