@@ -140,9 +140,12 @@ conf/sosaServer_uwsgi.ini
 conf/settings.py
 .idea/*
 */migrations
-static/*
 venv
 sosaServer.sock
 assets/*
+static/*
+collected_statics/*
+uploads/*
+uploaded_files/*
 .DS_Store
 
