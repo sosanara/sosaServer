@@ -17,3 +17,7 @@ def host_password():
 
 def from_email():
     return host_user()
+
+
+def port():
+    return 100

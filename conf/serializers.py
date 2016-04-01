@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_field
 from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers, exceptions

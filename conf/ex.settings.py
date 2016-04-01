@@ -7,4 +7,4 @@ def secret_key():
 
 
 def static_root():
-    return '/Users/junseokchoi/workspace/pcharm/sosanara/sosaServer/collected_statics'
+    return '/Users/project/collected_statics'
