@@ -108,7 +108,7 @@ class StatisticDetail(RetrieveAPIView):
     def get_queryset(self):
         try:
             return MyResult.objects.get(type=self.kwargs['statistic_id'])
-        except MyPicture.DoesNotExist:
+        except MyResult.DoesNotExist:
             raise exceptions.NotFound()
 
     def retrieve(self, request, *args, **kwargs):
