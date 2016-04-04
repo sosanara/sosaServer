@@ -9,7 +9,10 @@ from userInfo.models import MyUser
 
 class MyResult(models.Model):
     image = models.ImageField(max_length=1024, upload_to='myResult/%Y/%m/%d/%h/%m/%s', blank=False)
-    type = models.IntegerField(default=0, blank=False, unique=True)
+    type = models.IntegerField(default=0, blank=False)
+    percentage = models.IntegerField(default=0, blank=False)
+    product = models.TextField(blank=True)
+    advice = models.TextField(blank=True)
     extra = models.TextField(blank=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now, blank=True, null=True)
