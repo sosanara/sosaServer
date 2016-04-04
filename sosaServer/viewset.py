@@ -1,10 +1,12 @@
 from picture.views import (PictureList, PictureDetail)
 from userInfo.views import (
-    UserDetail, StatisticDetail, HistoryList, HistoryDetail, GraphList, GraphDetail
+    UserDetail, StatisticList, StatisticDetail, HistoryList, HistoryDetail, GraphList, GraphDetail
 )
 
 
 user_detail = UserDetail.as_view()
+
+statistic_list = StatisticList.as_view()
 
 statistic_detail = StatisticDetail.as_view()
 
