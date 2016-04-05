@@ -87,12 +87,26 @@ class StatisticList(ListAPIView):
             all_list.append(part_picture)
         return all_list
 
+    def get_gender(self):
+        gender_list = []
+        for part in self.get_queryset():
+            try:
+                part_picture = MyPicture.objects.filter(
+                    user_id__exact=part['user_id'],
+                    user__gender__exact=self.request.user.gender,
+                ).latest('created_date')
+                gender_list.append(part_picture)
+            except MyPicture.DoesNotExist:
+                pass
+        return gender_list
+
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         my_picture = MyPicture.objects.filter(user_id__exact=self.request.user.id).latest('created_date')
         same_ages = self.get_peer(my_picture)
         all_ages = self.get_all()
-        statistic = serializer.get_cleaned_data(same_ages, all_ages)
+        gender_ages = self.get_gender()
+        statistic = serializer.get_cleaned_data(same_ages, all_ages, gender_ages)
         statistic.update({
             'my_type': my_picture.result.type
         })
@@ -107,13 +121,13 @@ class StatisticDetail(RetrieveAPIView):
 
     def get_queryset(self):
         try:
-            return MyResult.objects.get(type=self.kwargs['statistic_id'])
+            return MyResult.objects.filter(type=self.kwargs['statistic_id'])
         except MyResult.DoesNotExist:
             raise exceptions.NotFound()
 
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        statistic = serializer.get_cleaned_data(self.get_queryset())
+        statistic = serializer.get_cleaned_data(self.get_queryset(), self.kwargs['statistic_id'])
         return response(statistic, "It was successful statistic detail search.")
 
 

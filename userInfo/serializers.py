@@ -28,7 +28,7 @@ class MyUserDetailSerializer(serializers.Serializer):
 
 
 class MyStaticListSerializer(serializers.Serializer):
-    def get_cleaned_data(self, same_ages, all_ages):
+    def get_cleaned_data(self, same_ages, all_ages, gender_ages):
         type_0 = 0
         type_1 = 0
         type_2 = 0
@@ -90,20 +90,53 @@ class MyStaticListSerializer(serializers.Serializer):
             }
         })
 
+        type_0 = 0
+        type_1 = 0
+        type_2 = 0
+        type_3 = 0
+        type_4 = 0
+
+        for gender_age in gender_ages:
+            validate_image(gender_age)
+            type_num = gender_age.result.type
+            if type_num == 0:
+                type_0 += 1
+            elif type_num == 1:
+                type_1 += 1
+            elif type_num == 2:
+                type_2 += 1
+            elif type_num == 3:
+                type_3 += 1
+            elif type_num == 4:
+                type_4 += 1
+
+        cleaned_data.update({
+            'gender_users_type': {
+                '0': type_0,
+                '1': type_1,
+                '2': type_2,
+                '3': type_3,
+                '4': type_4,
+            }
+        })
+
         return cleaned_data
 
 
 class MyStaticDetailSerializer(serializers.Serializer):
     def _validate_result(self, type):
-        if type not in [0, 1, 2, 3, 4]:
+        if type not in [0, 1, 2, 3, 4, '0', '1', '2', '3', '4']:
             raise serializers.ValidationError({"result": _("Result was not found.")})
 
-    def get_cleaned_data(self, my_result):
-        self._validate_result(my_result.type)
-        self.cleaned_data = {
-            'image': 'uploads/' + my_result.image.name,
-            'type': my_result.type,
-        }
+    def get_cleaned_data(self, my_results, statistic_id):
+        self.cleaned_data = {'images': {}}
+        self._validate_result(statistic_id)
+        for my_result in my_results:
+            self._validate_result(my_result.type)
+            self.cleaned_data['images'].update({
+                my_result.id: 'uploads/' + my_result.image.name,
+            })
+        self.cleaned_data.update({'type': statistic_id})
         return self.cleaned_data
 
 
