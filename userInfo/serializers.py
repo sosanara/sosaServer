@@ -142,12 +142,15 @@ class MyStaticDetailSerializer(serializers.Serializer):
 
 class MyHistoryListSerializer(serializers.Serializer):
     def get_cleaned_data(self, user, my_pictures):
-        pictures = {}
+        data = {}
         for my_picture in my_pictures:
             validate_user(user, my_picture.user)
             validate_image(my_picture)
-            pictures[my_picture.id] = 'uploads/' + my_picture.image.name
-        return pictures
+            data[my_picture.id] = {
+                'image': 'uploads/' + my_picture.image.name,
+                'created_data': my_picture.created_date,
+            }
+        return data
 
 
 class MyHistoryDetailSerializer(serializers.Serializer):
@@ -164,7 +167,6 @@ class MyHistoryDetailSerializer(serializers.Serializer):
 
 class MyGraphListSerializer(serializers.Serializer):
     def get_cleaned_data(self, user, my_pictures):
-        info = {}
         data = {}
         for my_picture in my_pictures:
             validate_user(user, my_picture.user)
@@ -175,8 +177,7 @@ class MyGraphListSerializer(serializers.Serializer):
                 'type': my_picture.result.type,
                 'percentage': my_picture.result.percentage,
             }
-            info.update(data)
-        return info
+        return data
 
 
 class MyGraphDetailSerializer(serializers.Serializer):
