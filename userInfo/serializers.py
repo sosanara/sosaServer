@@ -7,12 +7,12 @@ from django.utils.translation import ugettext_lazy as _
 
 def validate_user(user1, user2):
     if user1.id != user2.id:
-        raise serializers.ValidationError({"user": _("인증되지 않은 사용자 입니다.")})
+        raise serializers.ValidationError({"user": _("You are not have authorization.")})
 
 
 def validate_image(my_picture):
     if my_picture.image is None:
-        raise serializers.ValidationError({"image": _("이미지를 찾을 수 없습니다.")})
+        raise serializers.ValidationError({"image": _("Image was not found.")})
 
 
 class MyUserDetailSerializer(serializers.Serializer):
@@ -126,7 +126,7 @@ class MyStaticListSerializer(serializers.Serializer):
 class MyStaticDetailSerializer(serializers.Serializer):
     def _validate_result(self, type):
         if type not in [0, 1, 2, 3, 4, '0', '1', '2', '3', '4']:
-            raise serializers.ValidationError({"result": _("통계 결과를 찾을 수 없습니다.")})
+            raise serializers.ValidationError({"result": _("Result was not found.")})
 
     def get_cleaned_data(self, my_results, statistic_id):
         self.cleaned_data = {'images': {}}
