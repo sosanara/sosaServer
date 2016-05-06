@@ -43,7 +43,7 @@ class UserDetail(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         user_detail = serializer.get_cleaned_data(self.get_object())
-        return response(user_detail, "It was successful user detail search.")
+        return response(user_detail, "성공적으로 사용자 데이터를 찾았습니다.")
 
 
 class StatisticList(ListAPIView):
@@ -111,7 +111,7 @@ class StatisticList(ListAPIView):
             'my_type': my_picture.result.type
         })
 
-        return response(statistic, "It was successful statistic list search.")
+        return response(statistic, "성공적으로 통계 리스트를 찾았습니다.")
 
 
 class StatisticDetail(RetrieveAPIView):
@@ -128,7 +128,7 @@ class StatisticDetail(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         statistic = serializer.get_cleaned_data(self.get_queryset(), self.kwargs['statistic_id'])
-        return response(statistic, "It was successful statistic detail search.")
+        return response(statistic, "성공적으로 통계 데이터를 찾았습니다.")
 
 
 class HistoryList(ListAPIView):
@@ -145,7 +145,7 @@ class HistoryList(ListAPIView):
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         history_list = serializer.get_cleaned_data(request.user, self.get_queryset())
-        return response(history_list, "It was successful history list search.")
+        return response(history_list, "성고적으로 사진첩 리스트를 찾았습니다.")
 
 
 class HistoryDetail(RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
@@ -162,14 +162,14 @@ class HistoryDetail(RetrieveModelMixin, DestroyModelMixin, GenericViewSet):
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         history_detail = serializer.get_cleaned_data(request.user, self.get_queryset())
-        return response(history_detail, "It was successful history detail search.")
+        return response(history_detail, "성공적으로 사진첩 데이터를 찾았습니다.")
 
     def destroy(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         instance = self.get_queryset()
         history_detail = serializer.get_cleaned_data(request.user, instance)
         self.perform_destroy(instance)
-        return response(history_detail, "Successful removed History Parts.", status=HTTP_204_NO_CONTENT)
+        return response(history_detail, "성공적으로 사진첩 데이터를 지웠습니다.", status=HTTP_204_NO_CONTENT)
 
     def perform_destroy(self, instance):
         instance.delete()
@@ -189,7 +189,7 @@ class GraphList(ListAPIView):
     def list(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         graph_list = serializer.get_cleaned_data(request.user, self.get_queryset())
-        return response(graph_list, "It was successful graph list search.")
+        return response(graph_list, "성공적으로 그래프 리스트를 찾았습니다.")
 
 
 class GraphDetail(RetrieveAPIView):
@@ -206,4 +206,4 @@ class GraphDetail(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         graph_detail = serializer.get_cleaned_data(request.user, self.get_queryset())
-        return response(graph_detail, "It was successful graph detail search.")
+        return response(graph_detail, "성공적으로 그래프 데이터를 찾았습니다.")

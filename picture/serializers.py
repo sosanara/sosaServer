@@ -10,7 +10,7 @@ class MyPictureListSerializer(serializers.Serializer):
 
     def validate_image(self, image):
         if image is '':
-            raise serializers.ValidationError(_("Image is None. Please insert image"))
+            raise serializers.ValidationError(_("이미지를 입력해주세요."))
 
     def get_cleaned_data(self, request):
         return {
@@ -31,11 +31,11 @@ class MyPictureListSerializer(serializers.Serializer):
 class MyPictureDetailSerializer(serializers.Serializer):
     def _validate_user(self, user1, user2):
         if user1.id != user2.id:
-            raise serializers.ValidationError({"user": _("You are not have authorization.")})
+            raise serializers.ValidationError({"user": _("인증되지 않은 사용자 입니다.")})
 
     def _validate_image(self, my_picture):
         if my_picture is None:
-            raise serializers.ValidationError({"image": _("Image was not found.")})
+            raise serializers.ValidationError({"image": _("찾을 수 없는 이미지 입니다.")})
 
     def get_cleaned_data(self, user, my_picture):
         self._validate_image(my_picture)

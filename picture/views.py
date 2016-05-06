@@ -34,7 +34,7 @@ class PictureList(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         picture = self.perform_create(serializer)
 
-        return response(picture, "New picture has been saved.")
+        return response(picture, "이미지가 저장되었습니다.")
 
     def perform_create(self, serializer):
         picture = serializer.save(self.request)
@@ -56,4 +56,4 @@ class PictureDetail(RetrieveAPIView):
         serializer = self.get_serializer(data=request.data)
         picture = serializer.get_cleaned_data(request.user, self.get_queryset())
 
-        return response(picture, "Saved picture has been retrieved.")
+        return response(picture, "저장된 이미지가 성공적으로 조회되었습니다.")
