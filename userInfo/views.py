@@ -16,8 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 from picture.models import MyPicture, MyResult
 from userInfo.models import MyUser
 
-from .serializers import MyUserDetailSerializer,\
-    MyStaticListSerializer,\
+from .serializers import MyStaticListSerializer,\
     MyStaticDetailSerializer,\
     MyGraphListSerializer,\
     MyGraphDetailSerializer,\

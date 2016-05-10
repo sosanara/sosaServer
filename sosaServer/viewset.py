@@ -1,6 +1,6 @@
 from picture.views import (PictureList, PictureDetail)
 from userInfo.views import (
-    UserDetail, StatisticList, StatisticDetail, HistoryList, HistoryDetail, GraphList, GraphDetail
+    StatisticList, StatisticDetail, HistoryList, HistoryDetail, GraphList, GraphDetail
 )
 
 
