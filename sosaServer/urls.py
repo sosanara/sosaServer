@@ -20,7 +20,6 @@ from django.contrib import admin
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from sosaServer import settings
-from sosaServer.viewset import user_detail
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name="admin"),
@@ -29,7 +28,6 @@ urlpatterns = [
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
 
     url(r'^api/v1/', include([
-        url(r'^$', user_detail, name="api_user_detail"),
         url(r'^picture/', include('picture.urls', namespace="picture")),
         url(r'^userInfo/', include('userInfo.urls', namespace="user_info")),
     ])),

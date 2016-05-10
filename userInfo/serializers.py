@@ -15,18 +15,6 @@ def validate_image(my_picture):
         raise serializers.ValidationError({"image": _("Image was not found.")})
 
 
-class MyUserDetailSerializer(serializers.Serializer):
-    def get_cleaned_data(self, user):
-        self.cleaned_data = {
-            'username': user.username,
-            'name':  user.last_name + user.first_name,
-            'birth': user.birth,
-            'gender': user.gender,
-            'email': user.email,
-        }
-        return self.cleaned_data
-
-
 class MyStaticListSerializer(serializers.Serializer):
     def get_cleaned_data(self, same_ages, all_ages, gender_ages):
         type_0 = 0

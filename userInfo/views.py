@@ -32,20 +32,6 @@ def response(value, message, status=HTTP_200_OK):
         }, status=status)
 
 
-class UserDetail(RetrieveAPIView):
-    serializer_class = MyUserDetailSerializer
-    permission_classes = (IsAuthenticated,)
-    allowed_methods = ('GET', 'OPTIONS', 'HEAD')
-
-    def get_object(self):
-        return self.request.user
-
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        user_detail = serializer.get_cleaned_data(self.get_object())
-        return response(user_detail, "It was successful user detail search.")
-
-
 class StatisticList(ListAPIView):
     serializer_class = MyStaticListSerializer
     permission_classes = (IsAuthenticated,)

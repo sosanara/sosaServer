@@ -4,8 +4,6 @@ from userInfo.views import (
 )
 
 
-user_detail = UserDetail.as_view()
-
 statistic_list = StatisticList.as_view()
 
 statistic_detail = StatisticDetail.as_view()
