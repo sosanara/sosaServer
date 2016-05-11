@@ -16,7 +16,6 @@ GENDER_CHOICE = ['Man', 'Women']
 
 
 class RegisterDetailSerializer(RegisterSerializer):
-    email = serializers.EmailField(required=True)
     birth = serializers.IntegerField(required=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
