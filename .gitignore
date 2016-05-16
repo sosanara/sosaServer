@@ -137,15 +137,16 @@ conf/database.py
 conf/email.py
 conf/sosaServer.conf
 conf/sosaServer_uwsgi.ini
+conf/machineLearning.py
 conf/settings.py
-.idea/*
+.idea/
+venv/
+assets/
+static/
+uploaded_files/
+data/
 */migrations
-venv
 sosaServer.sock
-assets/*
-static/*
 collected_statics/*
-uploads/*
-uploaded_files/*
 .DS_Store
 
