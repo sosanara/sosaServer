@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import datetime
+
 from django.db import models
 from django.utils import timezone
 
@@ -7,24 +9,20 @@ from django.utils import timezone
 from userInfo.models import MyUser
 
 
-class MyResult(models.Model):
-    image = models.ImageField(max_length=1024, upload_to='myResult/%Y/%m/%d/%h/%m/%s', blank=False)
-    type = models.IntegerField(default=0, blank=False)
-    percentage = models.IntegerField(default=0, blank=False)
-    product = models.TextField(blank=True)
-    advice = models.TextField(blank=True)
-    extra = models.TextField(blank=True)
-    created_date = models.DateTimeField(default=timezone.now)
-    updated = models.DateTimeField(default=timezone.now, blank=True, null=True)
-
-    def __unicode__(self):
-        return self.type
+def user_directory_path(instance, filename):
+    return 'myHair/{0}/{1}.{2}'.format(datetime.datetime.strftime(datetime.datetime.now(), "%Y/%m/%d/%h/%m/%s"),
+                                       instance.user.id, filename.split('.')[-1])
 
 
 class MyPicture(models.Model):
-    image = models.ImageField(max_length=1024, upload_to='myHair/%Y/%m/%d/%h/%m/%s', blank=False)
+    origin_image = models.ImageField(max_length=1024, upload_to=user_directory_path, blank=False)
+    change_image = models.TextField(blank=True)
     user = models.ForeignKey(MyUser, related_name="my_user", blank=False)
-    result = models.ForeignKey(MyResult, related_name="my_result", blank=True)
+    type = models.IntegerField(default=0, blank=False)
+    age_type = models.IntegerField(default=0, blank=False)
+    percentage = models.FloatField(default=0, blank=False)
+    product = models.TextField(blank=True)
+    advice = models.TextField(blank=True)
     extra = models.TextField(blank=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now, blank=True, null=True)

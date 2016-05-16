@@ -15,15 +15,15 @@ def response(picture, message):
     return Response({
             "success": _(message),
             "value": {
-                "image": 'uploads/' + picture.image.name,
-                "result_image": 'uploads/' + picture.result.image.name,
-                "result_type": picture.result.type,
+                "origin_image": 'uploads/' + picture.origin_image.name,
+                "change_image": 'uploads/' + picture.change_image,
+                "type": picture.type,
+                "percentage": picture.percentage,
                 "user": picture.user.last_name + picture.user.first_name,
             }
         })
 
 
-##### OpenCV 연산을 여기서 해야됨. #####
 class PictureList(CreateAPIView):
     serializer_class = MyPictureListSerializer
     permission_classes = (IsAuthenticated,)
@@ -33,7 +33,6 @@ class PictureList(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         picture = self.perform_create(serializer)
-
         return response(picture, "New picture has been saved.")
 
     def perform_create(self, serializer):
