@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-
+from rest_framework import exceptions
+from picture.models import MyPicture
 from rest_framework import serializers
-
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -11,120 +11,104 @@ def validate_user(user1, user2):
 
 
 def validate_image(my_picture):
-    if my_picture.image is None:
-        raise serializers.ValidationError({"image": _("Image was not found.")})
+    if my_picture.origin_image is None:
+        raise serializers.ValidationError({"origin_image": _("Image was not found.")})
+    if my_picture.change_image is None:
+        raise serializers.ValidationError({"change_image": _("Image was not found.")})
+
+
+class MyUserDetailSerializer(serializers.Serializer):
+    def get_cleaned_data(self, user):
+        self.cleaned_data = {
+            'name':  user.last_name + user.first_name,
+            'tutorial': user.tutorial,
+        }
+        return self.cleaned_data
 
 
 class MyStaticListSerializer(serializers.Serializer):
-    def get_cleaned_data(self, same_ages, all_ages, gender_ages):
-        type_0 = 0
-        type_1 = 0
-        type_2 = 0
-        type_3 = 0
-        type_4 = 0
+    def _get_user(self, all_user):
+        type_list = []
+        try:
+            for user in all_user:
+                type_list.append(MyPicture.objects.filter(user_id__exact=user['user_id']).latest('created_date'))
+        except MyPicture.DoesNotExist:
+            raise exceptions.NotFound()
+
+        return type_list
+
+    def get_cleaned_data(self, all_user, my_last_picture):
+        users = self._get_user(all_user)
+        age_0, age_1, age_2, age_3, age_4, age_5 = 0, 0, 0, 0, 0, 0
+        type_0, type_1, type_2, type_3, type_4 = 0, 0, 0, 0, 0
         cleaned_data = {}
 
-        for same_age in same_ages:
-            validate_image(same_age)
-            type_num = same_age.result.type
-            if type_num == 0:
-                type_0 += 1
-            elif type_num == 1:
-                type_1 += 1
-            elif type_num == 2:
-                type_2 += 1
-            elif type_num == 3:
-                type_3 += 1
-            elif type_num == 4:
-                type_4 += 1
+        for user in users:
+            validate_image(user)
+            age_num = user.age_type
+            if user.type == my_last_picture.type:
+                if age_num == 0: age_0 += 1
+                elif age_num == 1: age_1 += 1
+                elif age_num == 2: age_2 += 1
+                elif age_num == 3: age_3 += 1
+                elif age_num == 4: age_4 += 1
+                elif age_num == 5: age_5 += 1
+
+            type_num = user.type
+            if type_num == 0: type_0 += 1
+            elif type_num == 1: type_1 += 1
+            elif type_num == 2: type_2 += 1
+            elif type_num == 3: type_3 += 1
+            elif type_num == 4: type_4 += 1
 
         cleaned_data.update({
-            'same_ages_type': {
+            'ages': {
+                '0': age_0,
+                '1': age_1,
+                '2': age_2,
+                '3': age_3,
+                '4': age_4,
+                '5': age_5,
+                'my_age': my_last_picture.age_type,
+            },
+            'type': {
                 '0': type_0,
                 '1': type_1,
                 '2': type_2,
                 '3': type_3,
                 '4': type_4,
-            }
-        })
-
-        type_0 = 0
-        type_1 = 0
-        type_2 = 0
-        type_3 = 0
-        type_4 = 0
-
-        for all_age in all_ages:
-            validate_image(all_age)
-            type_num = all_age.result.type
-            if type_num == 0:
-                type_0 += 1
-            elif type_num == 1:
-                type_1 += 1
-            elif type_num == 2:
-                type_2 += 1
-            elif type_num == 3:
-                type_3 += 1
-            elif type_num == 4:
-                type_4 += 1
-
-        cleaned_data.update({
-            'all_users_type': {
-                '0': type_0,
-                '1': type_1,
-                '2': type_2,
-                '3': type_3,
-                '4': type_4,
-            }
-        })
-
-        type_0 = 0
-        type_1 = 0
-        type_2 = 0
-        type_3 = 0
-        type_4 = 0
-
-        for gender_age in gender_ages:
-            validate_image(gender_age)
-            type_num = gender_age.result.type
-            if type_num == 0:
-                type_0 += 1
-            elif type_num == 1:
-                type_1 += 1
-            elif type_num == 2:
-                type_2 += 1
-            elif type_num == 3:
-                type_3 += 1
-            elif type_num == 4:
-                type_4 += 1
-
-        cleaned_data.update({
-            'gender_users_type': {
-                '0': type_0,
-                '1': type_1,
-                '2': type_2,
-                '3': type_3,
-                '4': type_4,
+                'my_type': my_last_picture.type,
             }
         })
 
         return cleaned_data
 
 
-class MyStaticDetailSerializer(serializers.Serializer):
-    def _validate_result(self, type):
-        if type not in [0, 1, 2, 3, 4, '0', '1', '2', '3', '4']:
-            raise serializers.ValidationError({"result": _("Result was not found.")})
+class MyGalleryListSerializer(serializers.Serializer):
+    def get_cleaned_data(self, user, my_pictures):
+        data = {}
+        for my_picture in my_pictures:
+            validate_user(user, my_picture.user)
+            validate_image(my_picture)
+            data[my_picture.id] = {
+                'origin_image': 'uploads/' + my_picture.origin_image.name,
+                'created_data': my_picture.created_date,
+            }
+        return data
 
-    def get_cleaned_data(self, my_results, statistic_id):
-        self.cleaned_data = {'images': {}}
-        self._validate_result(statistic_id)
-        for my_result in my_results:
-            self._validate_result(my_result.type)
-            self.cleaned_data['images'].update({
-                my_result.id: 'uploads/' + my_result.image.name,
-            })
-        self.cleaned_data.update({'type': statistic_id})
+
+class MyGalleryDetailSerializer(serializers.Serializer):
+    def get_cleaned_data(self, user, my_picture):
+        validate_user(user, my_picture.user)
+        validate_image(my_picture)
+        self.cleaned_data = {
+            'origin_image_name': my_picture.origin_image.name,
+            'change_image_name': my_picture.change_image,
+            'type': my_picture.type,
+            'percentage': my_picture.percentage,
+            'user': my_picture.user.last_name + my_picture.user.first_name,
+            'created_date': my_picture.created_date,
+        }
         return self.cleaned_data
 
 
@@ -135,47 +119,68 @@ class MyHistoryListSerializer(serializers.Serializer):
             validate_user(user, my_picture.user)
             validate_image(my_picture)
             data[my_picture.id] = {
-                'image': 'uploads/' + my_picture.image.name,
-                'created_data': my_picture.created_date,
+                'create_date': my_picture.created_date,
+                'birth': my_picture.user.birth,
+                'type': my_picture.type,
+                'percentage': my_picture.percentage,
             }
         return data
 
 
 class MyHistoryDetailSerializer(serializers.Serializer):
+    def _get_before_picture(self, my_picture):
+        before_picture_id = None
+        try:
+            for picture in MyPicture.objects.filter(user_id=my_picture.user.id):
+                if my_picture.id == picture.id:
+                    break
+                else:
+                    before_picture_id = picture.id
+            if before_picture_id is None:
+                return None
+            return MyPicture.objects.get(id=before_picture_id)
+        except MyPicture.DoesNotExist:
+            raise exceptions.NotFound()
+
+    def _get_first_picture(self, my_picture):
+        try:
+            first_picture = MyPicture.objects.filter(user_id=my_picture.user.id)[0]
+            if my_picture.id == first_picture.id:
+                return None
+            return first_picture
+        except MyPicture.DoesNotExist:
+            raise exceptions.NotFound()
+
     def get_cleaned_data(self, user, my_picture):
         validate_user(user, my_picture.user)
         validate_image(my_picture)
+        before = self._get_before_picture(my_picture)
+        first = self._get_first_picture(my_picture)
+
         self.cleaned_data = {
-            'name': my_picture.image.name,
-            'created_date': my_picture.created_date,
-            'type': my_picture.result.type,
-        }
-        return self.cleaned_data
-
-
-class MyGraphListSerializer(serializers.Serializer):
-    def get_cleaned_data(self, user, my_pictures):
-        data = {}
-        for my_picture in my_pictures:
-            validate_user(user, my_picture.user)
-            validate_image(my_picture)
-            data[my_picture.id] = {
-                'create_date': my_picture.created_date,
-                'birth': my_picture.user.birth,
-                'type': my_picture.result.type,
-                'percentage': my_picture.result.percentage,
+            'current': {
+                'origin_image': 'uploads/' + my_picture.origin_image.name,
+                'percentage': my_picture.percentage,
+                'created_date': my_picture.created_date,
             }
-        return data
-
-
-class MyGraphDetailSerializer(serializers.Serializer):
-    def get_cleaned_data(self, user, my_picture):
-        validate_user(user, my_picture.user)
-        validate_image(my_picture)
-        self.cleaned_data = {
-            'image': 'uploads/' + my_picture.image.name,
-            'result_image': 'uploads/' + my_picture.result.image.name,
-            'result_type': my_picture.result.type,
-            'user': my_picture.user.last_name + my_picture.user.first_name,
         }
+
+        if before is not None:
+            self.cleaned_data.update({
+                'before': {
+                    'origin_image': 'uploads/' + before.origin_image.name,
+                    'percentage': my_picture.percentage - before.percentage,
+                    'created_date': before.created_date,
+                }
+            })
+
+        if first is not None:
+            self.cleaned_data.update({
+                'first': {
+                    'origin_image': 'uploads/' + first.origin_image.name,
+                    'percentage': my_picture.percentage - first.percentage,
+                    'created_date': first.created_date,
+                }
+            })
+
         return self.cleaned_data
