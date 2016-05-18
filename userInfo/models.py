@@ -11,6 +11,7 @@ from rest_framework.authtoken.models import Token
 class MyUser(AbstractUser):
     birth = models.IntegerField(blank=False, default=0)
     gender = models.CharField(max_length=10, blank=False, default='0')
+    tutorial = models.BooleanField(blank=False, default=False, null=False)
     extra = models.TextField(blank=True)
     created_date = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(default=timezone.now, blank=True, null=True)
