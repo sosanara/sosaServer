@@ -73,18 +73,3 @@ class MyPictureListSerializer(serializers.Serializer):
             self._set_tutorial(request.user)
         my_picture.save()
         return my_picture
-
-
-class MyPictureDetailSerializer(serializers.Serializer):
-    def _validate_user(self, user1, user2):
-        if user1.id != user2.id:
-            raise serializers.ValidationError({"user": _("You are not have authorization.")})
-
-    def _validate_image(self, my_picture):
-        if my_picture is None:
-            raise serializers.ValidationError({"image": _("Image was not found.")})
-
-    def get_cleaned_data(self, user, my_picture):
-        self._validate_image(my_picture)
-        self._validate_user(user, my_picture.user)
-        return my_picture
