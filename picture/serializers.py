@@ -30,7 +30,7 @@ class MyPictureListSerializer(serializers.Serializer):
     def _get_ml_image(self, path):
         binary_image = GetBinaryImage.BImage('uploaded_files/' + path)
         return binary_image.save_binary_to_image(
-            'uploaded_files/' + self._get_removed_filename(path), 1, 180, 100, (46, 183, 79)
+            'uploaded_files/' + self._get_removed_filename(path), 1, 180, 100
         )
 
     def _get_ml_result(self, path):
@@ -62,8 +62,9 @@ class MyPictureListSerializer(serializers.Serializer):
             origin_image=self.cleaned_data['image'],
             user=self.cleaned_data['user'],
         )
-        ml_image = self._get_ml_image(my_picture.origin_image.name)
+
         ml = self._get_ml_result(my_picture.origin_image.name)
+        ml_image = self._get_ml_image(my_picture.origin_image.name)
 
         my_picture.age_type = self._set_age_type(my_picture)
         my_picture.change_image = ml_image['fullname'][len(ml_image['fullname'].split('/')[0])+1:]

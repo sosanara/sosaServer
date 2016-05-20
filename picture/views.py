@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import exceptions
 
 from django.utils.translation import ugettext_lazy as _
 
-from .models import MyPicture
-from .serializers import MyPictureListSerializer, MyPictureDetailSerializer
+from .serializers import MyPictureListSerializer
 
 
 def response(picture, message):

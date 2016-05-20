@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from sosaServer.viewset import (picture_list, picture_detail)
+from sosaServer.viewset import picture_list
 
 
 urlpatterns = [
