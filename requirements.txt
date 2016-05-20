@@ -18,5 +18,5 @@ scikit-learn==0.17.1
 scipy==0.17.0
 six==1.10.0
 sklearn==0.0
--e git+https://github.com/sosanara/sosaML.git@ff981a5e828e5c4b7e789e02ae0312fb5db642dd#egg=sosaML
+-e git+https://github.com/sosanara/sosaML.git@9f81f70cbbd489cbb4b48f2095d21ce9741137ea#egg=ML
 uWSGI==2.0.13

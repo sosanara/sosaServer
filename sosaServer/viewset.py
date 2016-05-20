@@ -1,4 +1,4 @@
-from picture.views import (PictureList, PictureDetail)
+from picture.views import PictureList
 from userInfo.views import (
     StatisticList, UserDetail, GalleryList, GalleryDetail, HistoryList, HistoryDetail
 )
@@ -9,8 +9,6 @@ user_detail = UserDetail.as_view()
 statistic_list = StatisticList.as_view()
 
 picture_list = PictureList.as_view()
-
-picture_detail = PictureDetail.as_view()
 
 gallery_list = GalleryList.as_view()
 
