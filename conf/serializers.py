@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+from allauth.account.adapter import get_adapter
+from django import forms
 from allauth.account.utils import user_field
 from rest_auth.serializers import PasswordResetSerializer
 from rest_framework import serializers, exceptions
@@ -22,6 +23,19 @@ class RegisterDetailSerializer(RegisterSerializer):
     gender = serializers.ChoiceField(required=True, choices=GENDER_CHOICE)
 
     cleanup_name = re.compile(r'''^[\d.@!#$%^&*`'"\|=?~,+_-]+$''')
+
+    def validate_username(self, username):
+        username = get_adapter().clean_username(username)
+        if len(username) < 5:
+            raise forms.ValidationError(_("Username must be a minimum of {0} "
+                                          "characters.").format(5))
+        return username
+
+    def validate_password1(self, password):
+        if len(password) < 8:
+            raise forms.ValidationError(_("Password must be a minimum of {0} "
+                                          "characters.").format(8))
+        return password
 
     def validate_birth(self, birth):
         if 1900 > birth or birth > 2016:
