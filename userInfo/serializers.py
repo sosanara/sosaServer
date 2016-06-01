@@ -62,6 +62,7 @@ class MyStaticListSerializer(serializers.Serializer):
             elif type_num == 4: type_4 += 1
 
         cleaned_data.update({
+            'age': my_last_picture.created_date.year - my_last_picture.user.birth + 1,
             'ages': {
                 '0': age_0,
                 '1': age_1,
