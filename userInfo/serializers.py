@@ -46,13 +46,12 @@ class MyStaticListSerializer(serializers.Serializer):
         for user in users:
             validate_image(user)
             age_num = user.age_type
-            if user.type == my_last_picture.type:
-                if age_num == 0: age_0 += 1
-                elif age_num == 1: age_1 += 1
-                elif age_num == 2: age_2 += 1
-                elif age_num == 3: age_3 += 1
-                elif age_num == 4: age_4 += 1
-                elif age_num == 5: age_5 += 1
+            if age_num == 0: age_0 += 1
+            elif age_num == 1: age_1 += 1
+            elif age_num == 2: age_2 += 1
+            elif age_num == 3: age_3 += 1
+            elif age_num == 4: age_4 += 1
+            elif age_num == 5: age_5 += 1
 
             type_num = user.type
             if type_num == 0: type_0 += 1
